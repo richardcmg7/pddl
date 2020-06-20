@@ -1,0 +1,23 @@
+
+; Version LPG-td-1.4
+; Seed 65867227
+; Command line: ./lpg-td -o ./pddl/domain.pddl -f ./pddl/problema3.banana.pddl -speed 
+; Problem ./pddl
+; Actions having STRIPS duration
+; Time 0.00
+; Search time 0.00
+; Parsing time 0.00
+; Mutex time 0.00
+; NrActions 11
+
+0:   (BAJAR MONO CAJA1 POS1) [1]
+1:   (MOVER MONO POS1 POS2) [1]
+2:   (MOVER MONO POS2 POS1) [1]
+3:   (MOVER MONO POS1 POS2) [1]
+4:   (MOVER-CAJA MONO CAJA2 POS2 POS3) [1]
+5:   (MOVER MONO POS3 POS2) [1]
+6:   (MOVER MONO POS2 POS1) [1]
+7:   (MOVER-CAJA MONO CAJA1 POS1 POS2) [1]
+8:   (MOVER MONO POS2 POS3) [1]
+9:   (SUBIR MONO CAJA2 POS3) [1]
+10:   (TOMAR MONO BANANA CAJA2 POS3) [1]
