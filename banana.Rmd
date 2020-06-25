@@ -1,106 +1,93 @@
 ---
-title: "Laboratorio: Planificación STRIPS"
+title: 'Laboratorio: Planificación STRIPS'
 author: "Richard Camilo Saavedra Coneo"
 date: "24/6/2020"
 output:
   html_document:
     df_print: paged
+  pdf_document: default
+
+.h3{
+  font-size: 1.2em;
+}
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+### 1. Descripción de la actividad:
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+Expresa el siguiente escenario en la representación tipo STRIPS:
+ 
+En una habitación hay un mono, una caja y un plátano, tal como indica la figura (situación inicial). El objetivo del mono es tener el plátano. El mono puede:
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+* Ir de una posición a otra.
+* Empujar la caja de una posición a otra si está en la misma posición que ella no está sobre ella.
+* Subirse a la caja si está en la misma posición que ella.
+* Coger el plátano si está en encima de la caja.</br>
 
-`(())`
 
-(define (domain banana)
+<div class="text-center">
+![Imagen Representación](https://github.com/richardcmg7/pddl/blob/master/img/img1.jpg?raw=true)
+</div>
 
-    
-    (:requirements :strips :typing :negative-preconditions )
+Modelar en PDDL (dominio.pddl y problema[S].pddl - 3 problemas) el mismo escenario que se plantea en la actividad y resolver los problemas con 3 planificadores del estado del arte.
 
-    (:types 
-        mono caja posicion banana
+### 2. Desarrollo:
+
+#### 2.1 Definición del PDDL
+
+PDDL esta compuesta por dos partes: la definición del dominio y la definición del problema(instancia)
+
+para la presente actividad se establecio el dominio según los requerimientos descritos anteriormente y se plantearán 3 problemas a desarrollar.
+
+Se realizará la prueba con 3 planificadores diferentes.
+
+##### 2.1.1 Definición del dominio
+###### Nombre del dominio:
+
+Inicialmente establecemos el nombre del dominio "Banana" :
+
+`(define (domain banana)`
+
+###### Requerimientos:
+
+:strips - Aun que en pruebas con el planificador inicial no afecta su funcionamiento configuramos el subconjunto más básico de PDDL :strips.
+
+:typing - Me permite específicar tipos de objetos específicos.
+
+:negative-preconditions - La herramienta utilizada recomienda que configuremos precondiciones negativas. Al no colocarlo presentaba la alerta pero corria el planificador
+
+
+<div style="background-color:#000000;color:#fff">
+` (:requirements :strips :typing :negative-preconditions ) `
+</div>
+###### Tipos:
+
+<div style="background-color:#000000;color:#fff">
+    (:types
+        mono caja posicion banana 
     )
+</div>
 
+##### Predicados
 
-    (:predicates ;Definimos los predicados 
-        (enb ?b - banana ?p - posicion)
-        (en ?m - mono ?p - posicion)
-        (enc ?c - caja ?p - posicion)
-        (sobre-caja ?m - mono)
-        (tomar-banana ?m - mono)
-        (lado ?p1 ?p2 - posicion)
-        (ocupado ?o - posicion)
-    )
-
-    (:action mover
-        :parameters (?m - mono ?l1 ?l2 - posicion )
-        :precondition (and (lado ?l1 ?l2) (en ?m ?l1) (not(sobre-caja ?m)) )
-        :effect (and 
-            (en ?m ?l2) (not (en ?m ?l1))
-
-        )
-    )
-    (:action mover-caja
-        :parameters (?m - mono ?c - caja ?l1 - posicion ?l2 - posicion) 
-        :precondition (and (en ?m ?l1) (enc ?c ?l1) (lado ?l1 ?l2) (not(sobre-caja ?m)) (not(ocupado ?l2)))  ;El mono esta en la misma posición que la caja se podra mover
-        :effect(and 
-            (not (en ?m ?l1)) 
-            (not (enc ?c ?l1))     
-            (ocupado ?l2)
-            (not(ocupado ?l1))
-            (enc ?c ?l2) 
-            (en ?m ?l2)
-        )
-    )
-
-    (:action subir
-        :parameters (?m - mono ?c - caja ?l1 - posicion)
-        :precondition (and 
-            (en ?m ?l1) (enc ?c ?l1) (not( sobre-caja ?m))
-        )
-        :effect (and 
-            (sobre-caja ?m) 
-        )
-
-    )
-    (:action bajar
-        :parameters (?m - mono ?c - caja ?l1 - posicion)
-        :precondition (and 
-            (en ?m ?l1) (enc ?c ?l1) (sobre-caja ?m)
-        )
-        :effect (and 
-            (not(sobre-caja ?m))
-        )
-
-    )
-    (:action tomar
-        :parameters (?m - mono ?b - banana ?c - caja ?l - posicion)
-        :precondition (and 
-            (en ?m ?l) (enc ?c ?l) (enb ?b ?l) (sobre-caja ?m)
-        )
-        :effect (and 
-            (tomar-banana ?m)
-        )
-    )
-  
-
-
+caja posicion banana 
 )
-`
 
-## Including Plots
+##### Acciones
 
-You can also embed plots, for example:
+###### Parámetros
+###### Pre-condiciones
+###### Efectos
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+##### 2.1.2 Definición del problema
+
+
+
+### 3. Pruebas con planificadores
+#### 3.1
+#### 3.2
+#### 3.3
