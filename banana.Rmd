@@ -7,9 +7,6 @@ output:
     df_print: paged
   pdf_document: default
 
-.h3{
-  font-size: 1.2em;
-}
 ---
 
 ```{r setup, include=FALSE}
