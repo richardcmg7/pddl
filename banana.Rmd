@@ -1,0 +1,106 @@
+---
+title: "Laboratorio: Planificación STRIPS"
+author: "Richard Camilo Saavedra Coneo"
+date: "24/6/2020"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+`(())`
+
+(define (domain banana)
+
+    
+    (:requirements :strips :typing :negative-preconditions )
+
+    (:types 
+        mono caja posicion banana
+    )
+
+
+    (:predicates ;Definimos los predicados 
+        (enb ?b - banana ?p - posicion)
+        (en ?m - mono ?p - posicion)
+        (enc ?c - caja ?p - posicion)
+        (sobre-caja ?m - mono)
+        (tomar-banana ?m - mono)
+        (lado ?p1 ?p2 - posicion)
+        (ocupado ?o - posicion)
+    )
+
+    (:action mover
+        :parameters (?m - mono ?l1 ?l2 - posicion )
+        :precondition (and (lado ?l1 ?l2) (en ?m ?l1) (not(sobre-caja ?m)) )
+        :effect (and 
+            (en ?m ?l2) (not (en ?m ?l1))
+
+        )
+    )
+    (:action mover-caja
+        :parameters (?m - mono ?c - caja ?l1 - posicion ?l2 - posicion) 
+        :precondition (and (en ?m ?l1) (enc ?c ?l1) (lado ?l1 ?l2) (not(sobre-caja ?m)) (not(ocupado ?l2)))  ;El mono esta en la misma posición que la caja se podra mover
+        :effect(and 
+            (not (en ?m ?l1)) 
+            (not (enc ?c ?l1))     
+            (ocupado ?l2)
+            (not(ocupado ?l1))
+            (enc ?c ?l2) 
+            (en ?m ?l2)
+        )
+    )
+
+    (:action subir
+        :parameters (?m - mono ?c - caja ?l1 - posicion)
+        :precondition (and 
+            (en ?m ?l1) (enc ?c ?l1) (not( sobre-caja ?m))
+        )
+        :effect (and 
+            (sobre-caja ?m) 
+        )
+
+    )
+    (:action bajar
+        :parameters (?m - mono ?c - caja ?l1 - posicion)
+        :precondition (and 
+            (en ?m ?l1) (enc ?c ?l1) (sobre-caja ?m)
+        )
+        :effect (and 
+            (not(sobre-caja ?m))
+        )
+
+    )
+    (:action tomar
+        :parameters (?m - mono ?b - banana ?c - caja ?l - posicion)
+        :precondition (and 
+            (en ?m ?l) (enc ?c ?l) (enb ?b ?l) (sobre-caja ?m)
+        )
+        :effect (and 
+            (tomar-banana ?m)
+        )
+    )
+  
+
+
+)
+`
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
